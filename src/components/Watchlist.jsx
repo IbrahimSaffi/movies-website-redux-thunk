@@ -1,11 +1,13 @@
 import React from 'react'
 import MovieCard from './ui/MovieCard'
+import { useSelector } from 'react-redux';
 
-export default function Watchlist(props) {
+export default function Watchlist() {
+   let {watchlist} = useSelector(state=>state.moviesSlice)
     return (
         <div className='list-container'>
-            {props.watchlist.length === 0 && <h1>No movies to watch yet...</h1>}
-            {props.watchlist.map(movie => <MovieCard movie={movie} />)}
+            {watchlist.length === 0 && <h1>No movies to watch yet...</h1>}
+            {watchlist.map(movie => <MovieCard movie={movie} />)}
         </div>
     )
 }

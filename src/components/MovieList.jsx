@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import MovieCard from './ui/MovieCard';
+import { useSelector,useDispatch } from 'react-redux';
+import moviesSlice, { nextPage } from './moviesSlice';
 
 export default function MovieList() {
-
-  const [movies, setMovies] = useState([]);
-  const API_URL = 'https://api.themoviedb.org/3/discover/movie?api_key=9b153f4e40437e115298166e6c1b997c';
-
-  let getData = () => {
-    console.log('get data called')
-    fetch(API_URL).then(data => data.json()).then(data => setMovies(data.results));
-  }
-  useEffect(() => {
-    getData();
-  }, [])
+  let {movies,loading} = useSelector(state=>state.moviesSlice)
+  let dispatch = useDispatch(moviesSlice)
 
   return (
+    <div style={{display:"flex",flexDirection:"column"}} >
     <div className='list-container'>
-      {movies.length === 0 ? (<h1>loading...</h1>) : movies.map(movie => <MovieCard movie={movie} />)}
+      { loading==="pending"? (<h1>Loading...</h1>) : movies.map((movie) => <MovieCard movie={movie} />)}
+    </div >
+      <button style={{alignSelf:"center",marginBottom:"10px",display:loading===""?"flex":"none"}} onClick={()=>dispatch(nextPage())} > Next Page</button>
+
     </div>
   )
 }
